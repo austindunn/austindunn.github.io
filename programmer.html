@@ -21,46 +21,43 @@
     </head>
     <body id="programmer">
 
-        <div id="root"></div>
+        <div id="root">
+            <p v-cloak>{{history}}</p>
+
+        </div>
         <!--<input id="user-input" placeholder="Please type your command..."></input>-->
 
         <!-- =======================SCRIPTS======================== -->
 
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
         <script src="assets/js/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="assets/js/bootstrap.min.js"></script>
-        <!-- Load React. -->
-        <!-- Note: when deploying, download prod version and update to include those "development.js" with "production.min.js". -->
-        <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-        <!-- JSX -->
-        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <script src="assets/js/vue-dev.js"></script>
 
-        <!-- React script for page interactions -->
-        <script type="text/babel">
-            class Game extends React.Component {
-                constructor(props) {
-                    super(props);
-                    this.state = {value: ''};
+        <script>
+            new Vue({
+                el: "#root",
+                data: {
+                    history: ""
+                },
+
+                methods: {
+                    type: function(text, speed) {
+                        if (text.length) {
+                            this.history += text.charAt(0);
+                            setTimeout(() => this.type(text.slice(1), speed), speed);
+                        } else {
+                            // activate text input
+                        }
+                    },
+                },
+
+                created: function() {
+                    this.type("Welcome to the programming page!\n\n" +
+                        "Please let me know what you'd like to do, among the following options:\n" +
+                        "* view CV\n" +
+                        "* view Github", 15);
                 }
-
-                handleSubmit(event) {
-
-                }
-
-                render() {
-                    return (
-                        <p>Welcome to the programming page!</p>
-                        <input type="text" value={this.state.value} onChange={this.handleChange} />
-                    );
-                }
-            }
-
-            ReactDOM.render(
-                <Game/>,
-                document.getElementById('root')
-            );
+            })
         </script>
     </body>
 </html>

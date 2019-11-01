@@ -35,4 +35,7 @@ body#programmer {
 }
 body#programmer #root p {
     font-family: courier; color: #fff;
+    white-space: pre-wrap;
 }
+
+[v-cloak] { display: none; }
