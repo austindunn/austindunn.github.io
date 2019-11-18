@@ -4,4 +4,3 @@ Gemfile.lock
 .jekyll-cache/
 _site
 vendor/
-assets/js/vue-dev.js
