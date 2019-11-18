@@ -22,10 +22,10 @@
     <body id="programmer">
 
         <div id="root">
-            <p v-cloak>{{history}}</p>
+            <p v-for="message in history" :class="message.class" v-cloak>{{message.message}}</p>
+            <input type="text" id="response" v-model="response" @keyup.enter.native="handleInput">
 
         </div>
-        <!--<input id="user-input" placeholder="Please type your command..."></input>-->
 
         <!-- =======================SCRIPTS======================== -->
 
@@ -34,28 +34,66 @@
         <script src="assets/js/vue-dev.js"></script>
 
         <script>
-            new Vue({
+            vm = new Vue({
                 el: "#root",
                 data: {
-                    history: ""
+                    prompts: [],
+                    userMessages: [],
+                    response: "",
+                    cvLink: "assets/docs/AustinDunn_CV.pdf",
+                    githubLink: "https://github.com/austindunn",
+                    options: "* view CV\n* view GitHub"
                 },
 
                 methods: {
-                    type: function(text, speed) {
-                        if (text.length) {
-                            this.history += text.charAt(0);
-                            setTimeout(() => this.type(text.slice(1), speed), speed);
+                    handleInput() {
+                        var response = this.response;
+                        this.response = '';
+
+                        this.userMessages.push(response);
+
+                        if (response.match(/.*cv.*/i) !== null) {
+                            window.location.href = this.cvLink;
+                            this.prompts.push("\nThere you go! Please check your downloads folder.\n" +
+                                "Is there anything else you would like to do?\n" +
+                                this.options);
+                            this.activateTextInput();
+                        } else if (response.match(/.*(gh|github).*/i) !== null) {
+                            this.prompts.push("\nI'll send you there in a couple seconds... See you next time!");
+                            setTimeout(() => window.location.href = this.githubLink, 2000);
                         } else {
-                            // activate text input
+                            this.prompts.push("\nSorry, I didn't quite understand that. Please tell me what you would like to do:\n" +
+                                this.options);
+                            this.activateTextInput();
                         }
+                    },
+
+                    activateTextInput() {
+                        this.$nextTick(() => $("#response").focus());
                     },
                 },
 
+                computed: {
+                    history() {
+                        var history = [];
+
+                        for (var i = 0; i < this.prompts.length; i++) {
+                            history.push({message: this.prompts[i], class: "prompt"});
+
+                            // userMessages will always have either the same length or one less than prompts
+                            if (typeof this.userMessages[i] !== 'undefined')
+                                history.push({message: this.userMessages[i], class: "user-message"});
+                        }
+
+                        return history;
+                    }
+                },
+
                 created: function() {
-                    this.type("Welcome to the programming page!\n\n" +
+                    this.prompts[this.prompts.length] = "Welcome to the programming page!\n\n" +
                         "Please let me know what you'd like to do, among the following options:\n" +
-                        "* view CV\n" +
-                        "* view Github", 15);
+                        this.options;
+                    this.activateTextInput();
                 }
             })
         </script>

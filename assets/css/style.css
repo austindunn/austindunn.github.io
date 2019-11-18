@@ -11,15 +11,14 @@ body#homepage #title {
     text-align: center;
 }
 body#homepage #title h1 {
-    color: #fff; font-family: courier; display: inline-block;
+    color: #fff;
+    font-family: courier;
+    display: inline-block;
 }
-/*
-body#homepage h3 {
-    color:white; font-family: courier;
-}
-*/
 body#homepage a {
-    color: #fff; font-family: courier; text-decoration: none;
+    color: #fff;
+    font-family: courier;
+    text-decoration: none;
 }
 
 @media (min-width: 750px) {
@@ -34,8 +33,21 @@ body#programmer {
     padding: 10px;
 }
 body#programmer #root p {
-    font-family: courier; color: #fff;
+    font-family: courier;
+    color: #fff;
     white-space: pre-wrap;
+}
+body#programmer #root p.user-message {
+    color: #b3ff99;
+    font-weight: 700;
+}
+body#programmer #root input#response {
+    background: #000;
+    width: 100%;
+    border: none;
+    color: #b3ff99;
+    font-family: courier;
+    font-weight: 700;
 }
 
 [v-cloak] { display: none; }
